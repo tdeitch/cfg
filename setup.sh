@@ -35,6 +35,11 @@ for template in *; do
   fi
 done
 
+if ! [ -x "$(command -v brew)" ]; then
+  echo "Installing Homebrew"
+  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
+
 echo "All remaining steps are unattended"
 
 cd "$DIR"
