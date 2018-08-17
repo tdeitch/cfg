@@ -2,7 +2,7 @@
 [include]
 	path = .gitconfig.inc
 [core]
-	excludesfile = .gitignore.inc
+	excludesfile = ~/.gitignore.inc
 	pager = less -X -F -r
 [color]
 	ui = true
