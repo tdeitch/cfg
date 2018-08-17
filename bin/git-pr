@@ -1,0 +1,6 @@
+tmpfile=$(mktemp)
+git show -s --format=%s > $tmpfile
+$EDITOR $tmpfile
+git push origin HEAD
+echo hub pull-request -F "$tmpfile"
+hub pull-request -F "$tmpfile"

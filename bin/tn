@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]; then
+  terminal-notifier -sound default -message Done\!
+else
+  echo "$@" | terminal-notifier -sound default 
+fi

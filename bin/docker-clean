@@ -1,0 +1,41 @@
+#!/bin/bash
+
+echo "Stopping the following containers:"
+docker ps -a -f status=running
+read -p "Press [Enter] to continue..."
+docker stop $(docker ps -a -f status=running -q)
+
+echo
+echo "================================================================================"
+echo
+
+echo "Removing the following containers:"
+docker ps -a -q
+read -p "Press [Enter] to continue..."
+docker rm $(docker ps -a -q)
+
+echo
+echo "================================================================================"
+echo
+
+echo "Removing the following networks (skipping used):"
+docker network ls
+docker network prune
+
+echo
+echo "================================================================================"
+echo
+
+echo "Removing the following images:"
+docker images -a
+read -p "Press [Enter] to continue..."
+docker rmi -f $(docker images -a -q)
+
+echo
+echo "================================================================================"
+echo
+
+echo "Removing the following volumes:"
+docker volume ls
+read -p "Press [Enter] to continue..."
+docker volume rm $(docker volume ls -q)

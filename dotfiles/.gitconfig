@@ -1,0 +1,24 @@
+# Add user.name and user.email to .gitconfig.inc
+[include]
+	path = .gitconfig.inc
+[core]
+	excludesfile = .gitignore.inc
+	pager = less -X -F -r
+[color]
+	ui = true
+[tag]
+	sort = version:refname
+
+[alias]
+	alias = !git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+	br = branch
+	ci = commit
+	co = checkout
+	dc = diff --cached
+	dev = checkout develop
+	lg = log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%C(yellow)%d%Creset ' --abbrev-commit
+	master = checkout master
+	pullff = pull --ff-only
+	st = status
+	sup = "!cd $HOME/Code && git standup -m 4 -s -d 5"
+	up = "!find $HOME/Code -name .git -print -execdir git fetch --all --prune \\;"

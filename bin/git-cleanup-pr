@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -e
+
+origin=origin
+upstream=upstream
+
+if git rev-parse --verify develop &> /dev/null; then 
+    mainbranch=develop
+elif git rev-parse --verify master &> /dev/null; then
+    mainbranch=master
+else
+    (>&2 echo "Could not infer main branch of repository.")
+    exit 1
+fi
+
+curbranch=$(git symbolic-ref --short HEAD)
+if [ $# -lt 1 ]; then
+    prbranch=$curbranch
+else
+    prbranch=$1
+fi
+
+echo "Deleting $prbranch and updating $mainbranch."
+if [ "$prbranch" = "$curbranch" ]; then
+    git checkout $mainbranch
+    curbranch=$(git symbolic-ref --short HEAD)
+fi
+
+if [ "$curbranch" = "$mainbranch" ]; then
+    git pull --ff-only $upstream $mainbranch
+else
+    git fetch $upstream $mainbranch:$mainbranch
+fi
+
+git push --no-verify $origin $mainbranch
+git branch -D $prbranch
+git push --no-verify --delete $origin $prbranch || git branch -r -d $origin/$prbranch
+
+echo "Deleted $prbranch and updated $mainbranch."
+echo
+git show --stat $mainbranch
