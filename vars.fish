@@ -1,6 +1,8 @@
 set -U EDITOR vim
 set -U fish_greeting
 set -U fish_user_paths ~/bin
+
+# Solarized dark
 set -U fish_color_autosuggestion 586e75
 set -U fish_color_cancel -r
 set -U fish_color_command 93a1a1
