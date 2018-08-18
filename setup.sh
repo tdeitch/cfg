@@ -46,22 +46,21 @@ cd "$DIR"
 brew bundle
 
 echo "Ensure fisherman plug-ins are installed"
+cd "$DIR/fish"
 link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
 fish -c "fisher ls" | grep -q '^z$' || fish -c "fisher z"
 
 echo "Ensure fish variables are set"
-fish "$DIR/vars.fish"
+fish "$DIR/fish/vars.fish"
 
 echo "Ensure fish functions are present"
-cd "$DIR/fish_functions"
+cd "$DIR/fish/functions"
 for fn in *; do
-  link_if_absent "$DIR/fish_functions/$fn" "$HOME/.config/fish/functions/$fn"
+  link_if_absent "$DIR/fish/functions/$fn" "$HOME/.config/fish/functions/$fn"
 done
 
 echo "Ensure secret fish variables are set"
-if [ ! -e "$HOME/.fish_secrets" ]; then
-  fish "$DIR/secret_vars.fish"
-fi
+fish "$DIR/fish/secret_vars.fish"
 
 echo "Ensure dotfiles are linked"
 cd "$DIR/dotfiles"
