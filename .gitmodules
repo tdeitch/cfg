@@ -28,6 +28,9 @@
 [submodule "dotfiles/.vim/pack/vim-airline/start/vim-airline-themes"]
 	path = dotfiles/.vim/pack/vim-airline/start/vim-airline-themes
 	url = https://github.com/vim-airline/vim-airline-themes.git
+[submodule "lib/fisherman"]
+	path = lib/fisherman
+	url = https://github.com/fisherman/fisherman.git
 [submodule "lib/solarized"]
 	path = lib/solarized
 	url = https://github.com/altercation/solarized.git

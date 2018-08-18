@@ -1,15 +1,3 @@
-# Antigen
-source /usr/local/share/antigen/antigen.zsh
-antigen use oh-my-zsh
-antigen bundle <<EOBUNDLES
-gitfast
-zsh-users/zsh-syntax-highlighting
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-completions
-EOBUNDLES
-antigen theme robbyrussell
-antigen apply
-
 # Environment
 export PATH=$HOME/bin:$PATH
 export EDITOR='vim'

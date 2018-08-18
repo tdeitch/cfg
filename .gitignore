@@ -1,4 +1,5 @@
 dotfiles/.emacs.d/recentf
 dotfiles/.emacs.d/saves/*
+dotfiles/.vim/.netrwhist
 dotfiles/.vim/undo/*
 !.keep
