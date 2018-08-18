@@ -58,6 +58,11 @@ for fn in *; do
   link_if_absent "$DIR/fish_functions/$fn" "$HOME/.config/fish/functions/$fn"
 done
 
+echo "Ensure secret fish variables are set"
+if [ ! -e "$HOME/.fish_secrets" ]; then
+  fish "$DIR/secret_vars.fish"
+fi
+
 echo "Ensure dotfiles are linked"
 cd "$DIR/dotfiles"
 for dotfile in *; do
