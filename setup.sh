@@ -49,6 +49,15 @@ echo "Ensure fisherman plug-ins are installed"
 link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
 fish -c "fisher ls" | grep -q '^z$' || fish -c "fisher z"
 
+echo "Ensure fish variables are set"
+fish "$DIR/vars.fish"
+
+echo "Ensure fish functions are present"
+cd "$DIR/fish_functions"
+for fn in *; do
+  link_if_absent "$DIR/fish_functions/$fn" "$HOME/.config/fish/functions/$fn"
+done
+
 echo "Ensure dotfiles are linked"
 cd "$DIR/dotfiles"
 for dotfile in *; do
