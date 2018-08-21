@@ -1,6 +1,16 @@
+#!/bin/bash
+if git config core.editor; then
+  editor=$(git config core.editor)
+elif [ -z "$EDITOR" ]; then
+  echo "Must set an editor!"
+  exit 1
+else
+  editor="$EDITOR"
+fi
+
 tmpfile=$(mktemp)
 git show -s --format=%s > $tmpfile
-$EDITOR $tmpfile
+$editor $tmpfile
 git push origin HEAD
 echo hub pull-request -F "$tmpfile"
 hub pull-request -F "$tmpfile"
