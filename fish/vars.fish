@@ -1,4 +1,5 @@
-set -U EDITOR vim
+set -Ux EDITOR vim
+
 set -U fish_greeting
 set -U fish_user_paths ~/bin
 
