@@ -1,5 +1,6 @@
 brew "ansible"
 brew "aspell"
+brew "clisp"
 brew "coreutils"
 brew "ctop"
 brew "dos2unix"
