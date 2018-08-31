@@ -43,7 +43,7 @@ fi
 
 echo "Ensure Homebrew packages are installed"
 cd "$DIR"
-brew bundle
+brew bundle --global
 
 echo "Ensure fisherman plug-ins are installed"
 cd "$DIR/fish"
@@ -77,4 +77,3 @@ fi
 for binfile in *; do
   link_if_absent "$DIR/bin/$binfile" "$HOME/bin/$binfile"
 done
-
