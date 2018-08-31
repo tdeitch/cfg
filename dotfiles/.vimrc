@@ -29,9 +29,8 @@ set wildmode=longest,list,full
 set wildmenu
 set wildignorecase
 
-" Airline theme
-let g:airline_theme='solarized'
-let g:airline_solarized_bg='dark'
+" Colors
+set background=dark
 
 " Keys
 let mapleader = ","
