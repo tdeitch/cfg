@@ -1,6 +1,8 @@
 # Add user.name and user.email to .gitconfig.inc
 [include]
 	path = .gitconfig.inc
+[init]
+	templatedir = ~/.git_template
 [core]
 	excludesfile = ~/.gitignore.inc
 	pager = less -X -F -r
@@ -14,6 +16,7 @@
 	br = branch
 	ci = commit
 	co = checkout
+	ctags = !.git/hooks/ctags
 	dc = diff --cached
 	dev = checkout develop
 	lg = log --graph --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)<%an>%Creset%C(yellow)%d%Creset ' --abbrev-commit
@@ -23,3 +26,4 @@
 	sup = "!cd $HOME/Code && git standup -m 4 -s -d 5"
 	up = "!find $HOME/Code -name .git -print -execdir git fetch --all --prune \\;"
 	aa = add --all
+	root = !pwd
