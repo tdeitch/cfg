@@ -14,8 +14,9 @@ autocmd BufNewFile,BufRead *.txt set formatoptions+=nt
 set number
 
 " Spell checking
-autocmd BufRead *.txt setlocal spell spelllang=en_us
-autocmd BufRead *.md setlocal spell spelllang=en_us
+set spelllang=en_us
+set spell
+autocmd FileType help setlocal nospell
 
 " Custom undo directory
 set undodir=~/.vim/undo
