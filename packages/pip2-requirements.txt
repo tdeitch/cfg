@@ -1,0 +1,6 @@
+coverage
+numpy
+requests
+six
+typing
+urllib3

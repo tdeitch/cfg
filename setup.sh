@@ -4,6 +4,7 @@ IFS=$'\n\t'
 shopt -s dotglob
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd "$DIR"
 
 function link_if_absent() {
   if [ ! -e "$2" ]; then
@@ -35,15 +36,34 @@ for template in *; do
   fi
 done
 
-echo "Ensure Homebrew is present"
+echo "Ensure Homebrew is present and up to date"
 if ! [ -x "$(command -v brew)" ]; then
   echo "Installing Homebrew"
   /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
+brew update
 
 echo "Ensure Homebrew packages are installed"
 cd "$DIR"
 brew bundle --global
+brew upgrade
+brew cask upgrade
+mas upgrade
+brew cleanup
+
+echo "Ensure pip packages are installed"
+cd "$DIR/packages"
+xargs pip2 install < pip2-requirements.txt
+xargs pip3 install < pip3-requirements.txt
+
+echo "Ensure npm packages are installed"
+npm update -g
+xargs npm install -g < npm-packages.txt
+
+echo "Ensure gems are installed"
+gem update --system
+gem update
+xargs gem install < gems.txt
 
 echo "Ensure fisherman plug-ins are installed"
 cd "$DIR/fish"
@@ -90,3 +110,6 @@ fi
 for binfile in *; do
   link_if_absent "$DIR/bin/$binfile" "$HOME/bin/$binfile"
 done
+
+echo "Ensure all projects use latest git templates"
+find $HOME/Code -name .git -print -execdir git init \;
