@@ -62,6 +62,7 @@ mas "Fantastical 2", id: 975937182
 mas "Pixelmator", id: 407963104
 mas "Radium", id: 597611879
 mas "Things3", id: 904280696
+mas "WiFi Signal", id: 525912054
 mas "Xcode", id: 497799835
 tap "homebrew/bundle"
 tap "homebrew/cask"
