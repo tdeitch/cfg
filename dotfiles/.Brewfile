@@ -1,3 +1,9 @@
+tap "homebrew/bundle"
+tap "homebrew/cask"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+tap "homebrew/core"
+tap "sergiobenitez/osxct"
 brew "ansible"
 brew "aspell"
 brew "clisp"
@@ -41,6 +47,7 @@ brew "wget"
 cask "1password"
 cask "alfred"
 cask "banktivity"
+cask "bartender"
 cask "cardhop"
 cask "dash"
 cask "day-o"
@@ -64,9 +71,3 @@ mas "Radium", id: 597611879
 mas "Things3", id: 904280696
 mas "WiFi Signal", id: 525912054
 mas "Xcode", id: 497799835
-tap "homebrew/bundle"
-tap "homebrew/cask"
-tap "homebrew/cask-fonts"
-tap "homebrew/cask-versions"
-tap "homebrew/core"
-tap "sergiobenitez/osxct"
