@@ -38,6 +38,11 @@ for template in *; do
   fi
 done
 
+echo "Ensure XCode command-line tools are present"
+if ! xcode-select -p; then
+  xcode-select --install
+fi
+
 echo "Ensure Homebrew is present and up to date"
 if ! [ -x "$(command -v brew)" ]; then
   echo "Installing Homebrew"
