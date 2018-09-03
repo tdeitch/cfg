@@ -23,7 +23,7 @@
 	master = checkout master
 	pullff = pull --ff-only
 	st = status
-	sup = "!cd $HOME/Code && git standup -m 4 -s -d 5"
-	up = "!find $HOME/Code -name .git -print -execdir git fetch --all --prune \\;"
+	sup = "!cd $CODE_HOME && git standup -m 4 -s -d 5"
+	up = "!find $CODE_HOME -name .git -print -execdir git fetch --all --prune \\;"
 	aa = add --all
 	root = !pwd

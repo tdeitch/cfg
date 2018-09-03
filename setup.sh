@@ -6,6 +6,8 @@ shopt -s dotglob
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd "$DIR"
 
+source settings.sh
+
 function link_if_absent() {
   if [ ! -e "$2" ]; then
     ln -s "$1" "$2"
@@ -103,13 +105,13 @@ done
 
 echo "Ensure bin executables are linked"
 cd "$DIR/bin"
-if [ ! -e "$HOME/bin" ]; then
-  echo "creating $HOME/bin"
-  mkdir "$HOME/bin"
+if [ ! -e "$BIN_HOME" ]; then
+  echo "creating $BIN_HOME"
+  mkdir "$BIN_HOME"
 fi
 for binfile in *; do
-  link_if_absent "$DIR/bin/$binfile" "$HOME/bin/$binfile"
+  link_if_absent "$DIR/bin/$binfile" "$BIN_HOME/$binfile"
 done
 
 echo "Ensure all projects use latest git templates"
-find $HOME/Code -name .git -print -execdir git init \;
+find $CODE_HOME -name .git -print -execdir git init \;
