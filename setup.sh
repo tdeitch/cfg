@@ -62,6 +62,12 @@ done
 echo "Ensure secret fish variables are set"
 fish "$DIR/fish/secret_vars.fish"
 
+echo "Ensure fish config files are present"
+cd "$DIR/fish/conf"
+for conf in *; do
+  link_if_absent "$DIR/fish/conf/$conf" "$HOME/.config/fish/conf.d/$conf"
+done
+
 echo "Ensure dotfiles are linked"
 cd "$DIR/dotfiles"
 for dotfile in *; do
