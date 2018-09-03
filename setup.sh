@@ -74,6 +74,13 @@ for dotfile in *; do
   link_if_absent "$DIR/dotfiles/$dotfile" "$HOME/$dotfile"
 done
 
+echo "Ensure LaunchAgents are linked"
+cd "$DIR/launchd"
+for agent in *; do
+  link_if_absent "$DIR/launchd/$agent" "$HOME/Library/LaunchAgents/$agent"
+  launchctl load "$HOME/Library/LaunchAgents/$agent"
+done
+
 echo "Ensure bin executables are linked"
 cd "$DIR/bin"
 if [ ! -e "$HOME/bin" ]; then

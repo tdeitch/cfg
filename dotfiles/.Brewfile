@@ -49,7 +49,6 @@ mas "Pixelmator", id: 407963104
 mas "Radium", id: 597611879
 mas "Things3", id: 904280696
 mas "Xcode", id: 497799835
-tap "domt4/autoupdate"
 tap "homebrew/bundle"
 tap "homebrew/cask"
 tap "homebrew/cask-fonts"
