@@ -52,6 +52,7 @@ brew update
 
 echo "Ensure Homebrew packages are installed"
 cd "$DIR"
+link_if_absent "$DIR/packages/Brewfile" "$HOME/.Brewfile"
 brew bundle --global
 brew upgrade
 brew cask upgrade
