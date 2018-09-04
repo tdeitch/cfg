@@ -13,6 +13,9 @@ autocmd BufNewFile,BufRead *.txt set formatoptions+=nt
 " Line numbers
 set number
 
+" list mode
+set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+
 " Spell checking
 set spelllang=en_us
 set spell
