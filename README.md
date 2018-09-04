@@ -23,8 +23,8 @@ As close as I care to come to declarative configuration management for my Macs.
 2. Review the changes and commit the ones you want to keep
 
 3. (Optional) run `clean.sh` to remove packages from the computer before
-   updating. This makes things slower, so only do it if you've made changes
-   outside of cfg that you want to remove from the computer.
+   updating. This makes the subsequent setup step slower, so only do it if
+   you've made changes outside of cfg that you want to remove from the computer.
 
 4. Run `setup.sh` to sync changes from cfg back to the local computer
 
