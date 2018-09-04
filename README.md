@@ -27,3 +27,9 @@ As close as I care to come to declarative configuration management for my Macs.
    outside of cfg that you want to remove from the computer.
 
 4. Run `setup.sh` to sync changes from cfg back to the local computer
+
+## Troubleshooting
+
+* Sometimes applications installed with homebrew-cask ask to move themselves to
+  the `/Applications` folder, despite already being in that folder. Moving them
+  to a different folder and then moving them back seems to solve the problem.
