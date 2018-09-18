@@ -1,0 +1,5 @@
+# Folder containing executables to place in the user's PATH
+export BIN_HOME="$HOME/bin"
+
+# Top-level folder for user's git source code folders
+export CODE_HOME="$HOME/Code"

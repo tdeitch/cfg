@@ -6,8 +6,6 @@ shopt -s dotglob
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd "$DIR"
 
-source settings.sh
-
 function link_if_absent() {
   if [ ! -e "$2" ]; then
     ln -s "$1" "$2"
@@ -37,6 +35,8 @@ for template in *; do
     vi "$HOME/$template"
   fi
 done
+
+source "$HOME/.cfgrc"
 
 echo "Ensure XCode command-line tools are present"
 if ! xcode-select -p; then
