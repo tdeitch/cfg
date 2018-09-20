@@ -1,0 +1,130 @@
+#!/usr/bin/env bash
+
+# https://github.com/tj/git-extras/blob/master/bin/git-sed
+#
+# (The MIT License)
+# 
+# Copyright (c) 2010 TJ Holowaychuk <tj@vision-media.ca> and Contributors
+# 
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# 'Software'), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+# 
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+# 
+# THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+# Changes (tdeitch):
+#
+# - Replace `git_extra_mktemp` with `mktemp`
+# - Print usage message if called without arguments
+
+usage() {
+    cat <<EOF
+usage: git sed [ -c ] [ -f <flags> ] <search> <replacement> [ <flags> ]
+
+Run git grep and then send results to sed for replacement with the
+given flags, if they are provided via -f or as the third argument.
+
+Also runs git commit if -c is provided.
+EOF
+}
+
+# don't commit by default
+do_commit() {
+    true
+}
+
+if [ $# -eq 0 ]; then
+    usage
+    exit 1
+fi
+
+while [ "X$1" != "X" ]; do
+    case "$1" in
+        -c|--commit)
+            if git status --porcelain | grep .; then
+                echo "you need to commit your changes before running with --commit"
+                exit 1
+            fi
+            do_commit() {
+                git commit -m"replace $search with $replacement
+
+actual command:
+
+    $command" -a
+            }
+            ;;
+        -f|--flags)
+            if [ "X$2" = "X" ]; then
+                usage
+                echo "missing argument for $1"
+                exit 1
+            fi
+            shift
+            flags=$1
+            ;;
+        -h|--help)
+            usage
+            exit
+            ;;
+        -*)
+            usage
+            echo "unknown flag: $1"
+            exit 1
+            ;;
+        *)
+            if [ "X$search" = "X" ]; then
+                search="$1"
+            elif [ "X$replacement" = "X" ]; then
+                replacement="$1"
+            elif [ "X$flags" = "X" ]; then
+                flags="$1"
+            else
+                usage
+                echo "too many arguments: $1"
+                exit 1
+            fi
+            ;;
+    esac
+    shift
+done
+
+all="$search$replacement$flags"
+case "$all" in
+    */*)
+        ascii="$(for((i=32;i<=127;i++)) do printf '%b' "\\$(printf '%03o' "$i")"; done)"
+        sep="$(printf '%s' "$ascii" | tr -d "$all")"
+        sep="$(printf %.1s "$sep")"
+        if [ "X$sep" = "X" ] ; then
+            echo 'could not find an unused character for sed separator character'
+            exit 1
+        fi
+        ;;
+    *)
+        sep=/
+        ;;
+esac
+
+r=$(xargs -r false < /dev/null > /dev/null 2>&1 && echo r)
+need_bak=$(sed -i s/hello/world/ "$(mktemp)" > /dev/null 2>&1 || echo true)
+
+if [ "$need_bak" ]; then
+    command="git grep -lz '$search' | xargs -0$r sed -i '' 's$sep$search$sep$replacement$sep$flags'"
+    git grep -lz "$search" | xargs -0"$r" sed -i '' "s$sep$search$sep$replacement$sep$flags"
+else
+    command="git grep -lz '$search' | xargs -0$r sed -i 's$sep$search$sep$replacement$sep$flags'"
+    git grep -lz "$search" | xargs -0"$r" sed -i "s$sep$search$sep$replacement$sep$flags"
+fi
+do_commit
