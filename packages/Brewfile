@@ -66,6 +66,7 @@ cask "sublime-text"
 mas "Bear", id: 1091189122
 mas "Day One", id: 1055511498
 mas "Fantastical 2", id: 975937182
+mas "OmniFocus", id: 1346203938
 mas "Pixelmator", id: 407963104
 mas "Radium", id: 597611879
 mas "Things3", id: 904280696
