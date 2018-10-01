@@ -45,7 +45,6 @@ brew "tmux"
 brew "trash"
 brew "watch"
 brew "wget"
-cask "1password"
 cask "alfred"
 cask "banktivity"
 cask "bartender"
@@ -63,12 +62,14 @@ cask "monodraw"
 cask "postgres"
 cask "spectacle"
 cask "sublime-text"
+mas "1Password 7", id: 1333542190
 mas "Bear", id: 1091189122
 mas "Day One", id: 1055511498
 mas "Fantastical 2", id: 975937182
 mas "OmniFocus", id: 1346203938
 mas "Pixelmator", id: 407963104
 mas "Radium", id: 597611879
+mas "Reeder", id: 880001334
 mas "Things3", id: 904280696
 mas "WiFi Signal", id: 525912054
 mas "Xcode", id: 497799835
