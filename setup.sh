@@ -80,7 +80,7 @@ xargs gem install < gems.txt
 echo "Ensure fisherman plug-ins are installed"
 cd "$DIR/fish"
 link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
-fish -c "fisher ls" | grep -q '^z$' || fish -c "fisher z"
+fish -c "fisher ls" | grep -q '^fisherman/z$' || fish -c "fisher add fisherman/z"
 
 echo "Ensure fish variables are set"
 fish "$DIR/fish/vars.fish"
