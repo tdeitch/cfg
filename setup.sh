@@ -61,8 +61,12 @@ brew cleanup
 
 echo "Ensure pip packages are installed"
 cd "$DIR/packages"
+pip2 install --upgrade pip
 xargs pip2 install < pip2-requirements.txt
+bash -c "pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U; true"
+pip3 install --upgrade pip
 xargs pip3 install < pip3-requirements.txt
+bash -c "pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U; true"
 
 echo "Ensure npm packages are installed"
 npm update -g
