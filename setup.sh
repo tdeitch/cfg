@@ -124,4 +124,4 @@ for binfile in *; do
 done
 
 echo "Ensure all projects use latest git templates"
-find $CODE_HOME -name .git -print -execdir git init \;
+bash -c "find $CODE_HOME -name .git -print -execdir git init \; ; true"
