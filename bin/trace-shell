@@ -1,0 +1,31 @@
+#!/bin/bash
+set -m
+
+function main {
+  check_sip
+  if ! sudo --validate; then
+    exit 1
+  fi
+  filename=$(mktemp)
+  PS1="\W [\[\e[31m\]rec\[\e[m\]]$ " bash &
+  pid=$!
+  sudo dtruss -p $pid -f 2> "$filename" &
+  fg %1
+  echo "Wrote trace from process $pid to $filename"
+}
+
+function check_sip {
+  if is_sip_disabled; then
+    echo "System integrity protection is disabled. Proceeding."
+  else
+    echo "System integrity protection must be disabled to run dtruss"
+    echo "https://www.imore.com/how-turn-system-integrity-protection-macos"
+    exit 1
+  fi
+}
+
+function is_sip_disabled {
+  csrutil status | grep -q 'disabled'
+}
+
+main
