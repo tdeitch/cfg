@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# git-standup
+# Prints a summary of commits made by a given person over a given time
+
 # https://github.com/kamranahmedse/git-standup
 
 # MIT License

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# git-sed
+# usage: git sed [ -f <flags> ] <search> <replacement> [ <flags> ]
+# Run git grep and then send results to sed for replacement with the
+# given flags, if they are provided via -f or as the third argument.
+
 # https://github.com/tj/git-extras/blob/master/bin/git-sed
 #
 # (The MIT License)

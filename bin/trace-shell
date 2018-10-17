@@ -1,11 +1,13 @@
 #!/bin/bash
 set -m
 
+# trace-shell
+# Open bash and monitor system calls with dtruss, then print a file path
+# containing a dump of all system calls at the end of the session.
+
 function main {
   check_sip
-  if ! sudo --validate; then
-    exit 1
-  fi
+  get_sudo
   filename=$(mktemp)
   PS1="\W [\[\e[31m\]rec\[\e[m\]]$ " bash &
   pid=$!
@@ -18,7 +20,7 @@ function check_sip {
   if is_sip_disabled; then
     echo "System integrity protection is disabled. Proceeding."
   else
-    echo "System integrity protection must be disabled to run dtruss"
+    echo "System integrity protection must be disabled to run dtruss."
     echo "https://www.imore.com/how-turn-system-integrity-protection-macos"
     exit 1
   fi
@@ -26,6 +28,10 @@ function check_sip {
 
 function is_sip_disabled {
   csrutil status | grep -q 'disabled'
+}
+
+function get_sudo {
+  sudo --validate || exit 1
 }
 
 main

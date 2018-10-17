@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# docker-clean
+# Run an escalating series of Docker clean-up tasks. The script is safe to
+# abort after any step with ctrl-c.
+
 echo "Stopping the following containers:"
 docker ps -a -f status=running
 read -p "Press [Enter] to continue..."
