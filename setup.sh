@@ -3,13 +3,7 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s dotglob
 
-function get_editor {
-  if [ -z "$EDITOR" ]; then
-    echo "vi"
-  else
-    echo $EDITOR
-  fi
-}
+source util_fns.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd "$DIR"
@@ -35,65 +29,6 @@ function main {
   link_launchd_files
   link_bin_files
   git_init_templates
-}
-
-function link_if_absent {
-  if [ ! -e "$2" ]; then
-    ln -s "$1" "$2"
-    echo "linked $1 to $2"
-  elif [ "$(readlink $2)" = "$1" ]; then
-    echo "link to $2 already exists"
-  else
-    echo "failure linking $1 to $2"
-    exit 1
-  fi
-}
-
-function sudo_link_if_absent {
-  if [ ! -e "$2" ]; then
-    sudo ln -s "$1" "$2"
-    echo "linked $1 to $2"
-  elif [ "$(sudo readlink $2)" = "$1" ]; then
-    echo "link to $2 already exists"
-  else
-    echo "failure linking $1 to $2"
-    exit 1
-  fi
-}
-
-function sudo_append_if_absent {
-  line=$1
-  file=$2
-  sudo grep -q '^'"$line"'$' "$file" || sudo echo "$line" >> $file
-}
-
-function copy_if_absent {
-  if [ ! -e "$2" ]; then
-    cp "$1" "$2"
-    echo "copied $1 to $2"
-  elif diff "$1" "$2"; then
-    echo "$2 already exists and is identical to $1"
-  else
-    echo "failure copying $1 to $2"
-    exit 1
-  fi
-}
-
-function sudo_copy_if_absent {
-  if [ ! -e "$2" ]; then
-    sudo cp "$1" "$2"
-    echo "copied $1 to $2"
-  elif sudo diff "$1" "$2"; then
-    echo "$2 already exists and is identical to $1"
-  else
-    echo "failure copying $1 to $2"
-    exit 1
-  fi
-}
-
-function sudo_validate {
-  echo "Re-prompt for sudo password"
-  sudo --validate
 }
 
 function load_terminal_theme {

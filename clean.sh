@@ -3,19 +3,10 @@ set -euo pipefail
 IFS=$'\n\t'
 shopt -s dotglob
 
+source util_fns.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd "$DIR"
-
-function prompt {
-  read -p "Continue [y/N]? " -n 1 -r
-  echo
-  if [[ $REPLY =~ ^[Yy]$ ]]
-  then
-    true
-  else
-    false
-  fi
-}
 
 brew bundle cleanup --global
 if prompt; then
