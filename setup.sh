@@ -37,7 +37,7 @@ function main {
   git_init_templates
 }
 
-function link_if_absent() {
+function link_if_absent {
   if [ ! -e "$2" ]; then
     ln -s "$1" "$2"
     echo "linked $1 to $2"
@@ -49,7 +49,7 @@ function link_if_absent() {
   fi
 }
 
-function sudo_link_if_absent() {
+function sudo_link_if_absent {
   if [ ! -e "$2" ]; then
     sudo ln -s "$1" "$2"
     echo "linked $1 to $2"
@@ -61,6 +61,35 @@ function sudo_link_if_absent() {
   fi
 }
 
+function sudo_append_if_absent {
+  line=$1
+  file=$2
+  sudo grep -q '^'"$line"'$' "$file" || sudo echo "$line" >> $file
+}
+
+function copy_if_absent {
+  if [ ! -e "$2" ]; then
+    cp "$1" "$2"
+    echo "copied $1 to $2"
+  elif diff "$1" "$2"; then
+    echo "$2 already exists and is identical to $1"
+  else
+    echo "failure copying $1 to $2"
+    exit 1
+  fi
+}
+
+function sudo_copy_if_absent {
+  if [ ! -e "$2" ]; then
+    sudo cp "$1" "$2"
+    echo "copied $1 to $2"
+  elif sudo diff "$1" "$2"; then
+    echo "$2 already exists and is identical to $1"
+  else
+    echo "failure copying $1 to $2"
+    exit 1
+  fi
+}
 
 function sudo_validate {
   echo "Re-prompt for sudo password"
@@ -99,10 +128,11 @@ function install_xcode_tools {
 function set_file_limits {
   echo "Ensure open file limits are set"
   maxfiles=$1
-  echo "kern.maxfiles=$maxfiles" | sudo tee -a /etc/sysctl.conf
-  echo "kern.maxfilesperproc=$maxfiles" | sudo tee -a /etc/sysctl.conf
+  sudo_append_if_absent "kern.maxfiles=$maxfiles" "/etc/sysctl.conf"
+  sudo_append_if_absent "kern.maxfilesperproc=$maxfiles" "/etc/sysctl.conf"
   sudo sysctl -w kern.maxfiles=$maxfiles
   sudo sysctl -w kern.maxfilesperproc=$maxfiles
+  sudo sort -o "/etc/sysctl.conf" "/etc/sysctl.conf"
 }
 
 function install_homebrew {
@@ -192,15 +222,17 @@ function link_launchd_files {
   echo "Ensure system LaunchDaemons are linked"
   cd "$DIR/launchd/system-daemons"
   for daemon in *; do
-    sudo_link_if_absent "$DIR/launchd/system-daemons/$daemon" "/Library/LaunchDaemons/$daemon"
+    sudo_copy_if_absent "$DIR/launchd/system-daemons/$daemon" "/Library/LaunchDaemons/$daemon"
     sudo chown root:wheel "/Library/LaunchDaemons/$daemon"
+    sudo chmod 644 "/Library/LaunchDaemons/$daemon"
     sudo launchctl load -w "/Library/LaunchDaemons/$daemon"
   done
 
   echo "Ensure user LaunchAgents are linked"
   cd "$DIR/launchd/user-agents"
   for agent in *; do
-    link_if_absent "$DIR/launchd/user-agents/$agent" "$HOME/Library/LaunchAgents/$agent"
+    copy_if_absent "$DIR/launchd/user-agents/$agent" "$HOME/Library/LaunchAgents/$agent"
+    chmod 644 "$HOME/Library/LaunchAgents/$agent"
     launchctl load -w "$HOME/Library/LaunchAgents/$agent"
   done
 }
