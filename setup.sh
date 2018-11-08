@@ -18,13 +18,13 @@ function main {
   set_file_limits 65536 # also set with launch daemons
   install_homebrew
   install_homebrew_packages
-  install_python_packages
-  install_node_packages
-  install_ruby_packages
   install_fisherman_plugins
   set_fish_variables
   link_fish_functions
   link_fish_config_files
+  install_python_packages
+  install_node_packages
+  install_ruby_packages
   link_dotfiles
   link_launchd_files
   link_bin_files

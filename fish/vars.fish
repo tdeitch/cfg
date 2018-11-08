@@ -3,7 +3,7 @@ set -Ux EDITOR vim
 set -Ux HOMEBREW_NO_AUTO_UPDATE 1
 
 set -U fish_greeting
-set -U fish_user_paths $BIN_HOME /usr/local/opt/node@8/bin
+set -U fish_user_paths $BIN_HOME /usr/local/opt/node@8/bin /usr/local/opt/ruby/bin
 
 # Solarized dark
 set -U fish_color_autosuggestion 586e75
