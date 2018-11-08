@@ -33,6 +33,13 @@ set wildmode=longest,list,full
 set wildmenu
 set wildignorecase
 
+" Omni completion
+filetype plugin on
+autocmd Filetype *
+  \ if &omnifunc == "" |
+  \ setlocal omnifunc=syntaxcomplete#Complete |
+  \ endif
+
 " Colors
 set background=dark
 
