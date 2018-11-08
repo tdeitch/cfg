@@ -1,0 +1,14 @@
+# Used by ~/bin/gh-mirror
+
+# "default" is required and is used when `--server` is omitted
+[default]
+ApiBase = https://api.github.com
+ApiUser = github_username
+ApiToken = 1234567890
+
+# Other servers are optional and can be given any name
+# This server would be used by passing `--server work`
+#[work]
+#ApiBase = https://api.github.work.example
+#ApiUser = work_username
+#ApiToken = 0987654321

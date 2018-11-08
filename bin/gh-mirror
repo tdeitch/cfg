@@ -1,0 +1,94 @@
+#!/usr/bin/env python3
+
+# gh-mirror
+# This script clones all repositories for a given Github organization.
+# It can also be used to clone just one repository.
+#
+# The script reads its configuration from an INI file located at ~/.gh-mirror.
+# The file should contain servers formatted as follows:
+#
+# [default]
+# ApiBase = https://api.github.com
+# ApiUser = username
+# ApiToken = 1234567890
+#
+# Servers can be named anything, but one must be named "default".
+
+import argparse
+import configparser
+import os
+import requests
+import subprocess
+
+from typing import NamedTuple
+
+CONFIG_FILE = os.path.expanduser('~/.gh-mirror')
+DEFAULT_SECTION_NAME = 'default'
+
+class Repo(NamedTuple):
+  name: str
+  ssh_url: str
+
+def clone(repo):
+  src = repo.ssh_url
+  dst = repo.name
+  if os.path.exists(dst):
+    print("directory exists: " + dst)
+    return
+  subprocess.call(["git", "clone", src, dst])
+
+def get_repo(org, repo, conf):
+  r = call_paged_api('/repos/' + org + '/' + repo, conf)
+  return Repo(r['name'], r['ssh_url'])
+
+def get_repos_in_org(org, conf):
+  repos = call_paged_api('/orgs/' + org + '/repos?per_page=100', conf)
+  return [Repo(r['name'], r['ssh_url']) for r in repos]
+
+def parse_args():
+  parser = argparse.ArgumentParser(description='Clone Github repos.')
+  parser.add_argument('--server', action='store', help='use a server other than the default')
+  parser.add_argument('--org', action='store', help='the org containing the repo to clone', required=True)
+
+  repo_parser = parser.add_mutually_exclusive_group(required=True)
+  repo_parser.add_argument('--all', action='store_true', help='clone all repos in the org, rather than just the listed one')
+  repo_parser.add_argument('--repo', action='store', help='the repo to clone')
+
+  return parser.parse_args()
+
+def get_conf(section_name):
+  config = configparser.ConfigParser()
+  config.read(CONFIG_FILE)
+  return config[section_name]
+
+def get_next_link(resp):
+  if not 'Link' in resp.headers:
+    return None
+  links = requests.utils.parse_header_links(resp.headers['Link'])
+  next_links = [link['url'] for link in links if link['rel'] == 'next']
+  return next_links[0] if len(next_links) > 0 else None
+
+def call_paged_api(path, conf):
+  result = None
+  next_link = conf['ApiBase'] + path
+  while next_link:
+    resp = requests.get(next_link, auth=(conf['ApiUser'], conf['ApiToken']))
+    next_link = get_next_link(resp)
+    if not result:
+      result = resp.json()
+    elif type(result) is list:
+      result.extend(resp.json())
+    elif type(result) is dict:
+      result.update(resp.json())
+    else:
+      raise "Unknown result type: " + type(result)
+  return result
+
+def main():
+  args = parse_args()
+  conf = get_conf(args.server) if args.server else get_conf(DEFAULT_SECTION_NAME)
+  repos = get_repos_in_org(args.org, conf) if args.all else [get_repo(args.org, args.repo, conf)]
+  for repo in repos:
+    clone(repo)
+
+main()
