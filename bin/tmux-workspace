@@ -1,0 +1,21 @@
+#!/bin/bash
+
+srcs_dir="$HOME/.tmux-workspaces"
+
+session_name="$1"
+srcfile="$srcs_dir/$1"
+
+if [ -z "$session_name" ]; then
+  ls -1 "$srcs_dir"
+  exit 0
+elif [ ! -z "$TMUX" ]; then
+  echo "Refusing to open nested tmux windows"
+  exit 1
+elif [ ! -f "$srcfile" ]; then
+  echo "No such workspace: $srcfile"
+  exit 1
+fi
+
+tmux new-session -d -s "$session_name"
+tmux attach-session -t "$session_name" \; source-file "$srcfile" \; detach-client
+tmux attach
