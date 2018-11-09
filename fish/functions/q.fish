@@ -1,4 +1,3 @@
-# Defined in - @ line 0
-function q --description 'alias q=exit'
-	exit  $argv;
+function q --description "alias for exit"
+  exit $argv;
 end
