@@ -37,23 +37,36 @@ def clone(repo):
     return
   subprocess.call(["git", "clone", src, dst])
 
-def get_repo(org, repo, conf):
-  r = call_paged_api('/repos/' + org + '/' + repo, conf)
+def get_repo(owner, repo, conf):
+  r = call_paged_api('/repos/' + owner + '/' + repo, conf)
   return Repo(r['name'], r['ssh_url'])
 
-def get_repos_in_org(org, conf):
-  repos = call_paged_api('/orgs/' + org + '/repos?per_page=100', conf)
-  return [Repo(r['name'], r['ssh_url']) for r in repos]
+def get_repos(url, conf, include_forks):
+  repos = call_paged_api(url, conf)
+  if include_forks:
+    return [Repo(r['name'], r['ssh_url']) for r in repos]
+  return [Repo(r['name'], r['ssh_url']) for r in repos if not r['fork']]
+
+def get_repos_for_me(conf, include_forks):
+  return get_repos('/user/repos?type=owner&per_page=100', conf, include_forks)
+
+def get_repos_for_user(user, conf, include_forks):
+  return get_repos('/orgs/' + org + '/repos?per_page=100', conf, include_forks)
+
+def get_repos_for_org(org, conf, include_forks):
+  return get_repos('/orgs/' + org + '/repos?per_page=100', conf, include_forks)
 
 def parse_args():
   parser = argparse.ArgumentParser(description='Clone Github repos.')
   parser.add_argument('--server', action='store', help='use a server other than the default')
-  parser.add_argument('--org', action='store', help='the org containing the repo to clone', required=True)
-
+  parser.add_argument('--forks', action='store_true', help='include forks as well as sources')
+  org_parser = parser.add_mutually_exclusive_group(required=True)
+  org_parser.add_argument('--org', action='store', help='clone from the given org')
+  org_parser.add_argument('--user', action='store', help='clone from the given user')
+  org_parser.add_argument('--me', action='store_true', help='clone from the current user (you)')
   repo_parser = parser.add_mutually_exclusive_group(required=True)
   repo_parser.add_argument('--all', action='store_true', help='clone all repos in the org, rather than just the listed one')
   repo_parser.add_argument('--repo', action='store', help='the repo to clone')
-
   return parser.parse_args()
 
 def get_conf(section_name):
@@ -81,13 +94,33 @@ def call_paged_api(path, conf):
     elif type(result) is dict:
       result.update(resp.json())
     else:
-      raise "Unknown result type: " + type(result)
+      raise Exception("Unknown result type: " + type(result))
   return result
+
+def get_owner(args, conf):
+  if args.me:
+    return conf['ApiUser']
+  elif args.org:
+    return args.org
+  return args.user
+
+def parse_and_get_repos(args, conf):
+  include_forks = args.forks == True
+  if not args.all:
+    return [get_repo(get_owner(args, conf), args.repo, conf)]
+  elif args.me:
+    return get_repos_for_me(conf, include_forks)
+  elif args.user:
+    return get_repos_for_user(args.user, conf, include_forks)
+  elif args.org:
+    return get_repos_for_org(args.org, conf, include_forks)
+  else:
+    raise Exception("Repo option not found")
 
 def main():
   args = parse_args()
   conf = get_conf(args.server) if args.server else get_conf(DEFAULT_SECTION_NAME)
-  repos = get_repos_in_org(args.org, conf) if args.all else [get_repo(args.org, args.repo, conf)]
+  repos = parse_and_get_repos(args, conf)
   for repo in repos:
     clone(repo)
 
