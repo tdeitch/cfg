@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# yarn-set-package-version
+#
+# Usage: yarn-set-package-version "@scope/package-name" "4.3.2-rc1"
+#
+# Try to update the given package to the given version across package.json files
+#
+# This script is a bit cavalier about finding and replacing version strings,
+# but it displays diffs before and after the upgrade to help you check its work.
+# It also assumes the directory is laid out like a Lerna project.
+
+package=$1
+new_version=$2
+old_version=$(grep '"'"$package"'"' package.json packages/*/package.json | head -n 1 | awk '{ print $3 }' | tr -d '"' | tr -d ',')
+
+echo "Changing version of $package from $old_version to $new_version"
+git sed '"'"$package"'": "'$old_version'"' '"'"$package"'": "'$new_version'"'
+git diff
+yarn upgrade "$package"
+echo "Version of $package changed from $old_version to $new_version"
+git diff
