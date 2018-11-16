@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+# git-tdeitch-mirror
+# Clones public and private repositories from git.tdeitch.com
+
+# Usage: git-tdeitch-mirror
+# This script requires that .ssh/config be set up to allow SSH access to
+# git.tdeitch.com.
+
+repos=$(ssh git.tdeitch.com "ls -d /home/{protected,public}/*.git")
+for repo in $repos; do
+  name="$(basename "$repo" ".git")"
+  if [ -e "$name" ]; then
+    echo "$name exists, skipping..."
+  else
+    git clone "git.tdeitch.com:$repo"
+    cd "$name"
+    git submodule update --init --recursive
+  fi
+done
