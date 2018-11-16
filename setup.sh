@@ -43,10 +43,12 @@ function load_terminal_theme {
 function link_templates {
   echo "Ensure templates are present"
   cd "$DIR/templates"
-  for template in *; do
+  templates=$(find . -type f | sed "s|^\./||")
+  for template in $templates; do
     if [ -e "$HOME/$template" ]; then
       echo "$HOME/$template already exists"
     else
+      mkdir -p "$(dirname "$HOME/$template")"
       cp "$template" "$HOME/$template"
       eval $EDITOR "$HOME/$template"
     fi
