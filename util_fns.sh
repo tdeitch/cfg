@@ -30,6 +30,22 @@ function sudo_link_if_absent {
   fi
 }
 
+function link_all_if_absent {
+  pushd "$1"
+  for file in *; do
+    link_if_absent "$1/$file" "$2/$file"
+  done
+  popd
+}
+
+function sudo_link_all_if_absent {
+  pushd "$1"
+  for file in *; do
+    sudo_link_if_absent "$1/$file" "$2/$file"
+  done
+  popd
+}
+
 function append_if_absent {
   line=$1
   file=$2

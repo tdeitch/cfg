@@ -21,6 +21,7 @@ function main {
   install_fisherman_plugins
   set_fish_variables
   link_fish_functions
+  link_fish_completions
   link_fish_config_files
   install_python_packages
   install_node_packages
@@ -133,26 +134,22 @@ function set_fish_variables {
 
 function link_fish_functions {
   echo "Ensure fish functions are present"
-  cd "$DIR/fish/functions"
-  for fn in *; do
-    link_if_absent "$DIR/fish/functions/$fn" "$HOME/.config/fish/functions/$fn"
-  done
+  link_all_if_absent "$DIR/fish/functions" "$HOME/.config/fish/functions"
+}
+
+function link_fish_completions {
+  echo "Ensure fish completions are present"
+  link_all_if_absent "$DIR/fish/completions" "$HOME/.config/fish/completions"
 }
 
 function link_fish_config_files {
   echo "Ensure fish config files are present"
-  cd "$DIR/fish/conf"
-  for conf in *; do
-    link_if_absent "$DIR/fish/conf/$conf" "$HOME/.config/fish/conf.d/$conf"
-  done
+  link_all_if_absent "$DIR/fish/conf" "$HOME/.config/fish/conf.d"
 }
 
 function link_dotfiles {
   echo "Ensure dotfiles are linked"
-  cd "$DIR/dotfiles"
-  for dotfile in *; do
-    link_if_absent "$DIR/dotfiles/$dotfile" "$HOME/$dotfile"
-  done
+  link_all_if_absent "$DIR/dotfiles" "$HOME"
 }
 
 function link_launchd_files {
@@ -181,9 +178,7 @@ function link_bin_files {
     echo "creating $BIN_HOME"
     mkdir "$BIN_HOME"
   fi
-  for binfile in *; do
-    link_if_absent "$DIR/bin/$binfile" "$BIN_HOME/$binfile"
-  done
+  link_all_if_absent "$DIR/bin" "$BIN_HOME"
 }
 
 function git_init_templates {
