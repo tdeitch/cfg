@@ -48,6 +48,8 @@ function link_templates {
   for template in $templates; do
     if [ -e "$HOME/$template" ]; then
       echo "$HOME/$template already exists"
+    elif [ "$(basename "$template")" == ".keep" ]; then
+      mkdir -p "$(dirname "$HOME/$template")"
     else
       mkdir -p "$(dirname "$HOME/$template")"
       cp "$template" "$HOME/$template"
