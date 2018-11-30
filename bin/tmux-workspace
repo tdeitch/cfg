@@ -6,6 +6,10 @@ session_name="$1"
 srcfile="$srcs_dir/$1"
 
 if [ -z "$session_name" ]; then
+  echo "Active sessions:"
+  tmux list-sessions
+  echo
+  echo "Available workspaces:"
   ls -1 "$srcs_dir"
   exit 0
 elif [ ! -z "$TMUX" ]; then
