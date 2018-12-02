@@ -47,3 +47,6 @@ set background=dark
 let mapleader = ","
 inoremap jj <Esc>
 nnoremap <leader><leader> <c-^>
+
+" Mouse
+set mouse=a
