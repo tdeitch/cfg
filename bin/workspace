@@ -18,6 +18,9 @@ elif [ ! -z "$TMUX" ]; then
 elif [ ! -f "$srcfile" ]; then
   echo "No such workspace: $srcfile"
   exit 1
+elif tmux has-session -t "$session_name" 2> /dev/null; then
+  echo "Re-attaching to existing session"
+  tmux attach-session -t "$session_name"
 fi
 
 tmux new-session -d -s "$session_name"
