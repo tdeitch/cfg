@@ -17,6 +17,7 @@ function main {
   install_xcode_tools
   set_file_limits 65536 # also set with launch daemons
   install_homebrew
+  generate_brewfile
   install_homebrew_packages
   install_xcode
   install_fisherman_plugins
@@ -86,10 +87,19 @@ function install_homebrew {
   brew update
 }
 
+function generate_brewfile {
+  echo "Generate brewfile"
+  > "$HOME/.Brewfile"
+  cd "$DIR/brewfiles"
+  IFS=',' read -ra brew_files_arr <<< "$BREWFILES"
+  for brewfile in "${brew_files_arr[@]}"; do
+    cat "$brewfile" >> "$HOME/.Brewfile"
+  done
+}
+
 function install_homebrew_packages {
   echo "Ensure Homebrew packages are installed"
   cd "$DIR"
-  link_if_absent "$DIR/packages/Brewfile" "$HOME/.Brewfile"
   brew bundle --global
   brew upgrade
   brew cask upgrade
