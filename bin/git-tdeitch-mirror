@@ -14,8 +14,6 @@ for repo in $repos; do
   if [ -e "$name" ]; then
     echo "$name exists, skipping..."
   else
-    git clone "git.tdeitch.com:$repo"
-    cd "$name"
-    git submodule update --init --recursive
+    git clone --recurse-submodules "git.tdeitch.com:$repo"
   fi
 done

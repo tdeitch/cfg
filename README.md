@@ -4,7 +4,7 @@ As close as I care to come to declarative configuration management for my Macs.
 
 ## On a new Mac
 
-1. `git clone git@github.com:tdeitch/cfg.git`
+1. `git clone --recurse-submodules git@github.com:tdeitch/cfg.git`
 
 2. `cd cfg`
 

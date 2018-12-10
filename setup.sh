@@ -18,7 +18,9 @@ function main {
   set_file_limits 65536 # also set with launch daemons
   install_homebrew
   install_homebrew_packages
+  install_xcode
   install_fisherman_plugins
+  prompt_for_fish
   set_fish_variables
   link_fish_functions
   link_fish_completions
@@ -95,6 +97,13 @@ function install_homebrew_packages {
   brew cleanup
 }
 
+function install_xcode {
+  echo "Run any remaining Xcode first launch tasks"
+  if xcodebuild -checkFirstLaunchStatus; then
+    sudo xcodebuild -runFirstLaunch
+  fi
+}
+
 function install_python_packages {
   echo "Ensure pip packages are installed"
   cd "$DIR/packages"
@@ -122,8 +131,17 @@ function install_ruby_packages {
 function install_fisherman_plugins {
   echo "Ensure fisherman plug-ins are installed"
   cd "$DIR/fish"
+  mkdir -p "$HOME/.config/fish/functions"
   link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
   fish -c "fisher ls" | grep -q '^fisherman/z$' || fish -c "fisher add fisherman/z"
+}
+
+function prompt_for_fish {
+  echo "Check that this script is running in fish"
+  if [[ ! "$SHELL" =~ "fish" ]]; then
+    echo "Set the login shell to fish, re-open a terminal, and try again."
+    echo "Current login shell: $SHELL"
+  fi
 }
 
 function set_fish_variables {
@@ -165,6 +183,7 @@ function link_launchd_files {
   done
 
   echo "Ensure user LaunchAgents are linked"
+  mkdir -p "$HOME/Library/LaunchAgents/"
   cd "$DIR/launchd/user-agents"
   for agent in *; do
     copy_if_absent "$DIR/launchd/user-agents/$agent" "$HOME/Library/LaunchAgents/$agent"

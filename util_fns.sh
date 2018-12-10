@@ -1,9 +1,11 @@
 function get_editor {
+  set +u
   if [ -z "$EDITOR" ]; then
     echo "vi"
   else
     echo $EDITOR
   fi
+  set -u
 }
 
 function link_if_absent {
@@ -55,7 +57,7 @@ function append_if_absent {
 function sudo_append_if_absent {
   line=$1
   file=$2
-  sudo grep -q '^'"$line"'$' "$file" || sudo echo "$line" >> $file
+  sudo grep -q '^'"$line"'$' "$file" || echo "$line" | sudo tee -a "$file"
 }
 
 function copy_if_absent {

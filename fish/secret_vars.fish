@@ -1,3 +1,5 @@
+#!/usr/bin/env fish
+
 function set_var
   if [ (count $argv) -ne 1 ]
     echo "Failed setting $argv: wrong number of arguments!"
