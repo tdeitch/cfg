@@ -3,3 +3,7 @@ export BIN_HOME="$HOME/bin"
 
 # Top-level folder for user's git source code folders
 export CODE_HOME="$HOME/Code"
+
+# Brewfiles to combine into the Brewfile used on this machine
+BREWFILES="common,work"
+
