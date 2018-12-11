@@ -11,6 +11,7 @@ cask "licecap"
 cask "mactex"
 cask "monodraw"
 cask "postgres"
+cask "postman"
 cask "sublime-text"
 mas "Day One", id: 1055511498
 mas "Fantastical 2", id: 975937182
