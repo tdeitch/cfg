@@ -5,6 +5,6 @@ function gradle
     command gradle $argv
   else
     echo "Gradle not found" >&2
-    exit 1
+    return 1
   end
 end
