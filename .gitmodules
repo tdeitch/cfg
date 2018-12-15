@@ -1,9 +1,6 @@
 [submodule "dotfiles/.vim/pack/airblade/start/vim-gitgutter"]
 	path = dotfiles/.vim/pack/airblade/start/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
-[submodule "dotfiles/.vim/pack/bling/start/vim-bufferline"]
-	path = dotfiles/.vim/pack/bling/start/vim-bufferline
-	url = https://github.com/bling/vim-bufferline.git
 [submodule "dotfiles/.vim/pack/ctrlpvim/start/ctrlp.vim"]
 	path = dotfiles/.vim/pack/ctrlpvim/start/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
@@ -22,9 +19,9 @@
 [submodule "dotfiles/.vim/pack/vim-airline/start/vim-airline"]
 	path = dotfiles/.vim/pack/vim-airline/start/vim-airline
 	url = https://github.com/vim-airline/vim-airline.git
+[submodule "dotfiles/.vim/pack/vim-airline/start/vim-airline-themes"]
+	path = dotfiles/.vim/pack/vim-airline/start/vim-airline-themes
+	url = git@github.com:vim-airline/vim-airline-themes.git
 [submodule "lib/fisherman"]
 	path = lib/fisherman
 	url = https://github.com/fisherman/fisherman.git
-[submodule "lib/solarized"]
-	path = lib/solarized
-	url = https://github.com/altercation/solarized.git

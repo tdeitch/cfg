@@ -11,7 +11,6 @@ EDITOR="$(get_editor)"
 
 function main {
   sudo_validate
-  load_terminal_theme
   link_templates
   source "$HOME/.cfgrc" # loaded in link_templates
   install_xcode_tools
@@ -33,15 +32,6 @@ function main {
   link_launchd_files
   link_bin_files
   git_init_templates
-}
-
-function load_terminal_theme {
-  echo "Ensure Solarized dark is installed"
-  if [ "$(defaults read com.apple.Terminal.plist 'Default Window Settings')" != "Solarized Dark ansi" ]; then
-    open "$DIR/lib/solarized/osx-terminal.app-colors-solarized/Solarized Dark ansi.terminal"
-    echo "Set this terminal theme to default and option as meta (under the keyboard tab)"
-    read -p "Press enter to continue "
-  fi
 }
 
 function link_templates {

@@ -5,5 +5,5 @@ export BIN_HOME="$HOME/bin"
 export CODE_HOME="$HOME/Code"
 
 # Brewfiles to combine into the Brewfile used on this machine
-BREWFILES="common,work"
+BREWFILES="common,hobbies,work"
 

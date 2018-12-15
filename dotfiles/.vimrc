@@ -41,7 +41,8 @@ autocmd Filetype *
   \ endif
 
 " Colors
-set background=dark
+set background=light
+let g:airline_theme='seagull'
 
 " Keys
 let mapleader = ","
