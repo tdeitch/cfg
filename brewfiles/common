@@ -40,6 +40,7 @@ brew "wget"
 cask "alfred"
 cask "bartender"
 cask "dash"
+cask "macvim"
 cask "spectacle"
 mas "1Password 7", id: 1333542190
 mas "Bear", id: 1091189122

@@ -1,5 +1,4 @@
-dotfiles/.emacs.d/recentf
-dotfiles/.emacs.d/saves/*
+dotfiles/.emacs.d/backups/*
 dotfiles/.emacs.d/auto-save-list/*
 dotfiles/.vim/.netrwhist
 dotfiles/.vim/undo/*

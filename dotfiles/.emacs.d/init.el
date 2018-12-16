@@ -15,16 +15,11 @@
 ; Set backup file location
 (setq
   backup-by-copying t
-  backup-directory-alist '(("." . "~/.emacs.d/saves"))
+  backup-directory-alist '(("." . "~/.emacs.d/backups"))
   delete-old-versions t
   kept-new-versions 6
   kept-old-versions 2
   version-control t)
-
-; Load recent items menu
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
 
 ; Spellcheck
 (dolist (hook '(text-mode-hook))
