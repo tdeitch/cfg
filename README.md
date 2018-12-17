@@ -14,7 +14,9 @@ As close as I care to come to declarative configuration management for my Macs.
 
 1. Ensure the git repo is up to date with no uncommitted changes
 
-2. Run `setup.sh` to sync changes from cfg to the local computer
+2. `git submodule update --init --recursive` to update submodules
+
+3. Run `setup.sh` to sync changes from cfg to the local computer
 
 ## To update cfg with local changes
 
