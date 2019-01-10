@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# workspace
+# This script runs tmux with a source-file from ~/.workspaces
+
 srcs_dir="$HOME/.workspaces"
 
 session_name="$1"

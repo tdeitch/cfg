@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+# pydata
+# reads tabular data (csv, tsv, or single-column) into an interactive Python shell
+
+import argparse
+import code
+import csv
+import io
+import sys
+
+parser = argparse.ArgumentParser(description="Read data into an interactive Python shell.")
+parser.add_argument("-d", help="delimiter", default=",", dest="delim")
+parser.add_argument("-q", help="quote character", default="\"", dest="quote")
+parser.add_argument("filename", nargs="?")
+args = parser.parse_args()
+
+delimiter = bytes(args.delim, "utf-8").decode("unicode_escape")
+quotechar = bytes(args.quote, "utf-8").decode("unicode_escape")
+has_filename = args.filename and args.filename != "-"
+has_stdin = not sys.stdin.isatty()
+
+if has_filename and has_stdin:
+  print("Error: stdin and filename are mutually exclusive")
+  sys.exit(1)
+elif has_filename:
+  with open(args.filename, newline='') as f:
+    dump = f.read()
+elif has_stdin:
+  dump = sys.stdin.read()
+  sys.stdin.close()
+  sys.stdin = open('/dev/tty', 'r')
+else:
+  print("Error: must provide either stdin or filename")
+  parser.print_usage()
+  sys.exit(1)
+
+lines = dump.splitlines()
+rows = []
+reader = csv.reader(io.StringIO(dump), delimiter=delimiter, quotechar=quotechar)
+for row in reader:
+  rows.append(row)
+cols = list(map(list, zip(*rows)))
+
+def truncate(s, l=70):
+  return repr(s)[:l-3] + ("..." if len(repr(s)) > l else "")
+
+banner = "\n".join((
+  "dump  = " + truncate(dump),
+  "lines = " + truncate(lines),
+  "rows  = " + truncate(rows),
+  "cols  = " + truncate(cols)
+))
+
+code.interact(local=locals(), banner=banner, exitmsg="Thank you, come again!")
