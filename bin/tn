@@ -4,7 +4,7 @@
 # A glorified alias for terminal-notifier
 # https://github.com/julienXX/terminal-notifier
 
-if [ $# -lt 2 ]; then
+if [ $# -lt 1 ]; then
   terminal-notifier -sound default -message Done\!
 else
   echo "$@" | terminal-notifier -sound default 

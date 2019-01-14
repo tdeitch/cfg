@@ -6,26 +6,34 @@
 srcs_dir="$HOME/.workspaces"
 
 session_name="$1"
-srcfile="$srcs_dir/$1"
+srcfile="$srcs_dir/$session_name"
 
-if [ -z "$session_name" ]; then
+function main {
+  if [ -z "$session_name" ]; then
+    list_info
+    exit 0
+  elif [ ! -z "$TMUX" ]; then
+    echo "Refusing to open nested tmux windows"
+    exit 1
+  elif [ ! -f "$srcfile" ]; then
+    echo "No such workspace: $srcfile"
+    exit 1
+  elif tmux has-session -t "$session_name" 2> /dev/null; then
+    echo "Re-attaching to existing session"
+    tmux attach-session -t "$session_name"
+  else
+    tmux new-session -d -s "$session_name"
+    tmux attach-session -t "$session_name" \; source-file "$srcfile" \; detach-client
+    tmux attach
+  fi
+}
+
+function list_info {
   echo "Active sessions:"
-  tmux list-sessions
+  tmux list-sessions 2> /dev/null || echo "None"
   echo
   echo "Available workspaces:"
-  ls -1 "$srcs_dir"
-  exit 0
-elif [ ! -z "$TMUX" ]; then
-  echo "Refusing to open nested tmux windows"
-  exit 1
-elif [ ! -f "$srcfile" ]; then
-  echo "No such workspace: $srcfile"
-  exit 1
-elif tmux has-session -t "$session_name" 2> /dev/null; then
-  echo "Re-attaching to existing session"
-  tmux attach-session -t "$session_name"
-fi
+  ls "$srcs_dir"
+}
 
-tmux new-session -d -s "$session_name"
-tmux attach-session -t "$session_name" \; source-file "$srcfile" \; detach-client
-tmux attach
+main
