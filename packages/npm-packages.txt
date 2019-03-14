@@ -1,4 +1,0 @@
-lerna
-npm
-typescript
-yarn

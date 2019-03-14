@@ -24,9 +24,9 @@ function main {
   link_fish_functions
   link_fish_completions
   link_fish_config_files
-  install_python_packages
-  install_node_packages
-  install_ruby_packages
+  update_pip
+  update_npm
+  update_gems
   link_dotfiles
   link_launch_agents
   link_bin_files
@@ -103,28 +103,23 @@ function install_xcode {
   fi
 }
 
-function install_python_packages {
-  echo "Ensure pip packages are installed"
-  cd "$DIR/packages"
+function update_pip {
+  echo "Ensure pip is up to date"
   pip2 install --upgrade pip
-  xargs pip2 install < pip2-requirements.txt
   bash -c "pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U; true"
   pip3 install --upgrade pip
-  xargs pip3 install < pip3-requirements.txt
   bash -c "pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U; true"
 }
 
-function install_node_packages {
-  echo "Ensure npm packages are installed"
+function update_npm {
+  echo "Ensure npm is up to date"
   npm update -g
-  xargs npm install -g < npm-packages.txt
 }
 
-function install_ruby_packages {
-  echo "Ensure gems are installed"
+function update_gems {
+  echo "Ensure gems are up to date"
   gem update --system
   gem update
-  xargs gem install < gems.txt
 }
 
 function install_fisherman_plugins {

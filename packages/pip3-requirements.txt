@@ -1,7 +1,0 @@
-Flask
-matplotlib
-numpy
-pandas
-pycrypto
-requests
-urllib3
