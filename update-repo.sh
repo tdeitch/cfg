@@ -8,7 +8,7 @@ cd "$DIR"
 
 function main {
   echo "Updating submodules..."
-  git submodule update --recursive --remote
+  update_submodules
 
   echo "Updating Brewfile..."
   brewfile=$(get_new_brewfile)
@@ -18,6 +18,11 @@ function main {
   else
     echo "No new Homebrew packages"
   fi
+}
+
+function update_submodules {
+  git submodule update --recursive --init
+  git submodule update --recursive --remote
 }
 
 function get_new_brewfile {
