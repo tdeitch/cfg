@@ -77,13 +77,12 @@ function install_homebrew {
 }
 
 function generate_brewfile {
-  echo "Generate brewfile"
-  > "$HOME/.Brewfile"
-  cd "$DIR/brewfiles"
-  IFS=',' read -ra brew_files_arr <<< "$BREWFILES"
-  for brewfile in "${brew_files_arr[@]}"; do
-    cat "$brewfile" >> "$HOME/.Brewfile"
-  done
+  echo "Generate Brewfile"
+  if [ -e "$HOME/.Brewfile.local" ]; then
+    cat "$DIR/Brewfile" "$HOME/.Brewfile.local" > "$HOME/.Brewfile"
+  else
+    cat "$DIR/Brewfile" > "$HOME/.Brewfile"
+  fi
 }
 
 function install_homebrew_packages {

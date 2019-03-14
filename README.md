@@ -30,6 +30,12 @@ As close as I care to come to declarative configuration management for my Macs.
 
 4. Run `setup.sh` to sync changes from cfg back to the local computer
 
+## To clean up old Homebrew packages
+
+1. `brew bundle cleanup --global` (dry run)
+
+2. `brew bundle cleanup --global --force` (for real)
+
 ## Troubleshooting
 
 * Sometimes applications installed with homebrew-cask ask to move themselves to
