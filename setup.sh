@@ -67,13 +67,12 @@ function install_homebrew {
 }
 
 function generate_brewfile {
-  echo "Generate Brewfile"
+  echo "Generating Brewfile"
+  touch -a "$HOME/.Brewfile.local"
   echo '# Packages from cfg Brewfile' > "$HOME/.Brewfile"
   cat "$DIR/Brewfile" >> "$HOME/.Brewfile"
-  if [ -e "$HOME/.Brewfile.local" ]; then
-    echo '# Packages from ~/.Brewfile.local' >> "$HOME/.Brewfile"
-    cat "$HOME/.Brewfile.local" >> "$HOME/.Brewfile"
-  fi
+  echo '# Packages from ~/.Brewfile.local' >> "$HOME/.Brewfile"
+  cat "$HOME/.Brewfile.local" >> "$HOME/.Brewfile"
 }
 
 function install_homebrew_packages {
