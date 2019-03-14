@@ -78,10 +78,11 @@ function install_homebrew {
 
 function generate_brewfile {
   echo "Generate Brewfile"
+  echo '# Packages from cfg Brewfile' > "$HOME/.Brewfile"
+  cat "$DIR/Brewfile" >> "$HOME/.Brewfile"
   if [ -e "$HOME/.Brewfile.local" ]; then
-    cat "$DIR/Brewfile" "$HOME/.Brewfile.local" > "$HOME/.Brewfile"
-  else
-    cat "$DIR/Brewfile" > "$HOME/.Brewfile"
+    echo '# Packages from ~/.Brewfile.local' >> "$HOME/.Brewfile"
+    cat "$HOME/.Brewfile.local" >> "$HOME/.Brewfile"
   fi
 }
 
