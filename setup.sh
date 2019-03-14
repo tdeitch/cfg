@@ -57,16 +57,6 @@ function install_xcode_tools {
   fi
 }
 
-function set_file_limits {
-  echo "Ensure open file limits are set"
-  maxfiles=$1
-  sudo_append_if_absent "kern.maxfiles=$maxfiles" "/etc/sysctl.conf"
-  sudo_append_if_absent "kern.maxfilesperproc=$maxfiles" "/etc/sysctl.conf"
-  sudo sysctl -w kern.maxfiles=$maxfiles
-  sudo sysctl -w kern.maxfilesperproc=$maxfiles
-  sudo sort -o "/etc/sysctl.conf" "/etc/sysctl.conf"
-}
-
 function install_homebrew {
   echo "Ensure Homebrew is present and up to date"
   if ! [ -x "$(command -v brew)" ]; then
