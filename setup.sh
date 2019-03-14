@@ -14,7 +14,6 @@ function main {
   link_templates
   source "$HOME/.cfgrc" # loaded in link_templates
   install_xcode_tools
-  set_file_limits 65536 # also set with launch daemons
   install_homebrew
   generate_brewfile
   install_homebrew_packages
@@ -29,7 +28,7 @@ function main {
   install_node_packages
   install_ruby_packages
   link_dotfiles
-  link_launchd_files
+  link_launch_agents
   link_bin_files
   git_init_templates
 }
@@ -172,21 +171,12 @@ function link_dotfiles {
   link_all_if_absent "$DIR/dotfiles" "$HOME"
 }
 
-function link_launchd_files {
-  echo "Ensure system LaunchDaemons are linked"
-  cd "$DIR/launchd/system-daemons"
-  for daemon in *; do
-    sudo_copy_if_absent "$DIR/launchd/system-daemons/$daemon" "/Library/LaunchDaemons/$daemon"
-    sudo chown root:wheel "/Library/LaunchDaemons/$daemon"
-    sudo chmod 644 "/Library/LaunchDaemons/$daemon"
-    sudo launchctl load -w "/Library/LaunchDaemons/$daemon"
-  done
-
+function link_launch_agents {
   echo "Ensure user LaunchAgents are linked"
   mkdir -p "$HOME/Library/LaunchAgents/"
-  cd "$DIR/launchd/user-agents"
+  cd "$DIR/launch-agents"
   for agent in *; do
-    copy_if_absent "$DIR/launchd/user-agents/$agent" "$HOME/Library/LaunchAgents/$agent"
+    copy_if_absent "$DIR/launch-agents/$agent" "$HOME/Library/LaunchAgents/$agent"
     chmod 644 "$HOME/Library/LaunchAgents/$agent"
     launchctl load -w "$HOME/Library/LaunchAgents/$agent"
   done
