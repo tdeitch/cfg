@@ -18,15 +18,10 @@ function main {
   generate_brewfile
   install_homebrew_packages
   install_xcode
-  install_fisherman_plugins
   prompt_for_fish
-  set_fish_variables
-  link_fish_functions
-  link_fish_completions
-  link_fish_config_files
-  update_pip
-  update_npm
-  update_gems
+  install_fisherman_plugins
+  link_fish_settings
+  update_package_managers
   link_dotfiles
   link_launch_agents
   link_bin_files
@@ -88,31 +83,15 @@ function install_xcode {
   fi
 }
 
-function update_pip {
-  echo "Ensure pip is up to date"
+function update_package_managers {
+  echo "Ensure package managers are up to date"
   pip2 install --upgrade pip
   bash -c "pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U; true"
   pip3 install --upgrade pip
   bash -c "pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U; true"
-}
-
-function update_npm {
-  echo "Ensure npm is up to date"
   npm update -g
-}
-
-function update_gems {
-  echo "Ensure gems are up to date"
   gem update --system
   gem update
-}
-
-function install_fisherman_plugins {
-  echo "Ensure fisherman plug-ins are installed"
-  cd "$DIR/fish"
-  mkdir -p "$HOME/.config/fish/functions"
-  link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
-  fish -c "fisher ls" | grep -q '^fisherman/z$' || fish -c "fisher add fisherman/z"
 }
 
 function prompt_for_fish {
@@ -123,26 +102,21 @@ function prompt_for_fish {
   fi
 }
 
-function set_fish_variables {
-  echo "Ensure fish variables are set"
+function install_fisherman_plugins {
+  echo "Ensure fisherman plug-ins are installed"
+  cd "$DIR/fish"
+  mkdir -p "$HOME/.config/fish/functions"
+  link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
+  link_if_absent "$DIR/fish/fishfile" "$HOME/.config/fish/fishfile"
+  fish -c fisher
+}
+
+function link_fish_settings {
+  echo "Ensure fish settings are present"
   fish "$DIR/fish/vars.fish"
-
-  echo "Ensure secret fish variables are set"
   fish "$DIR/fish/secret_vars.fish"
-}
-
-function link_fish_functions {
-  echo "Ensure fish functions are present"
   link_all_if_absent "$DIR/fish/functions" "$HOME/.config/fish/functions"
-}
-
-function link_fish_completions {
-  echo "Ensure fish completions are present"
   link_all_if_absent "$DIR/fish/completions" "$HOME/.config/fish/completions"
-}
-
-function link_fish_config_files {
-  echo "Ensure fish config files are present"
   link_all_if_absent "$DIR/fish/conf" "$HOME/.config/fish/conf.d"
 }
 
