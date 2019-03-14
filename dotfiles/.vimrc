@@ -46,7 +46,6 @@ let g:airline_theme='seagull'
 
 " Keys
 let mapleader = ","
-inoremap jj <Esc>
 nnoremap <leader><leader> <c-^>
 
 " Mouse
