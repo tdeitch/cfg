@@ -10,7 +10,7 @@ cd "$DIR"
 EDITOR="$(get_editor)"
 
 function main {
-  sudo_validate
+  sudo --validate
   link_templates
   source "$HOME/.cfgrc" # loaded in link_templates
   install_xcode_tools
@@ -29,7 +29,7 @@ function main {
 }
 
 function link_templates {
-  echo "Ensure templates are present"
+  step "Ensure templates are present"
   cd "$DIR/templates"
   templates=$(find . -type f | sed "s|^\./||")
   for template in $templates; do
@@ -46,14 +46,14 @@ function link_templates {
 }
 
 function install_xcode_tools {
-  echo "Ensure XCode command-line tools are present"
+  step "Ensure XCode command-line tools are present"
   if ! xcode-select -p; then
     xcode-select --install
   fi
 }
 
 function install_homebrew {
-  echo "Ensure Homebrew is present and up to date"
+  step "Ensure Homebrew is present and up to date"
   if ! [ -x "$(command -v brew)" ]; then
     echo "Installing Homebrew"
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -62,12 +62,13 @@ function install_homebrew {
 }
 
 function generate_brewfile {
-  echo "Generating Brewfile"
+  step "Generate Brewfile"
   cat "$DIR/Brewfile" "$HOME/.Brewfile.local" > "$HOME/.Brewfile"
+  echo "Done."
 }
 
 function install_homebrew_packages {
-  echo "Ensure Homebrew packages are installed"
+  step "Ensure Homebrew packages are installed"
   cd "$DIR"
   brew bundle --global
   brew upgrade
@@ -77,14 +78,14 @@ function install_homebrew_packages {
 }
 
 function install_xcode {
-  echo "Run any remaining Xcode first launch tasks"
+  step "Run any remaining Xcode first launch tasks"
   if xcodebuild -checkFirstLaunchStatus; then
     sudo xcodebuild -runFirstLaunch
   fi
 }
 
 function update_package_managers {
-  echo "Ensure package managers are up to date"
+  step "Ensure package managers are up to date"
   pip2 install --upgrade pip
   bash -c "pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U; true"
   pip3 install --upgrade pip
@@ -95,15 +96,16 @@ function update_package_managers {
 }
 
 function prompt_for_fish {
-  echo "Check that this script is running in fish"
+  step "Check that fish is set as the login shell"
+  echo "Current login shell: $SHELL"
   if [[ ! "$SHELL" =~ "fish" ]]; then
     echo "Set the login shell to fish, re-open a terminal, and try again."
-    echo "Current login shell: $SHELL"
+    exit 1
   fi
 }
 
 function install_fisherman_plugins {
-  echo "Ensure fisherman plug-ins are installed"
+  step "Ensure fisherman plug-ins are installed"
   cd "$DIR/fish"
   mkdir -p "$HOME/.config/fish/functions"
   link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
@@ -112,7 +114,7 @@ function install_fisherman_plugins {
 }
 
 function link_fish_settings {
-  echo "Ensure fish settings are present"
+  step "Ensure fish settings are present"
   fish "$DIR/fish/vars.fish"
   fish "$DIR/fish/secret_vars.fish"
   link_all_if_absent "$DIR/fish/functions" "$HOME/.config/fish/functions"
@@ -121,12 +123,12 @@ function link_fish_settings {
 }
 
 function link_dotfiles {
-  echo "Ensure dotfiles are linked"
+  step "Ensure dotfiles are linked"
   link_all_if_absent "$DIR/dotfiles" "$HOME"
 }
 
 function link_launch_agents {
-  echo "Ensure user LaunchAgents are linked"
+  step "Ensure user LaunchAgents are linked"
   mkdir -p "$HOME/Library/LaunchAgents/"
   cd "$DIR/launch-agents"
   for agent in *; do
@@ -137,7 +139,7 @@ function link_launch_agents {
 }
 
 function link_bin_files {
-  echo "Ensure bin executables are linked"
+  step "Ensure bin executables are linked"
   cd "$DIR/bin"
   if [ ! -e "$BIN_HOME" ]; then
     echo "creating $BIN_HOME"
@@ -147,8 +149,8 @@ function link_bin_files {
 }
 
 function git_init_templates {
-  echo "Ensure all projects use latest git templates"
-  bash -c "find $CODE_HOME -name .git -print -execdir git init \; ; true"
+  step "Ensure all projects use latest git templates"
+  bash -c "find $CODE_HOME -name .git -execdir git init \; ; true"
 }
 
 main

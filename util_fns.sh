@@ -84,11 +84,6 @@ function sudo_copy_if_absent {
   fi
 }
 
-function sudo_validate {
-  echo "Re-prompt for sudo password"
-  sudo --validate
-}
-
 function prompt {
   read -p "Continue [y/N]? " -n 1 -r
   echo
@@ -98,4 +93,8 @@ function prompt {
   else
     false
   fi
+}
+
+function step {
+  echo -e "\n\n\033[34;1;4m$@\033[0m"
 }
