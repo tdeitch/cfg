@@ -11,24 +11,24 @@ EDITOR="$(get_editor)"
 
 function main {
   sudo --validate
-  link_templates
-  source "$HOME/.cfgrc" # loaded in link_templates
+  copy_templates
+  source "$HOME/.cfgrc" # loaded in copy_templates
   install_xcode_tools
   install_homebrew
   generate_brewfile
   install_homebrew_packages
+  cleanup_homebrew_packages
   install_xcode
   prompt_for_fish
   install_fisherman_plugins
   link_fish_settings
-  update_package_managers
   link_dotfiles
   link_launch_agents
   link_bin_files
   git_init_templates
 }
 
-function link_templates {
+function copy_templates {
   step "Ensure templates are present"
   cd "$DIR/templates"
   templates=$(find . -type f | sed "s|^\./||")
@@ -49,6 +49,8 @@ function install_xcode_tools {
   step "Ensure XCode command-line tools are present"
   if ! xcode-select -p; then
     xcode-select --install
+  else
+    echo "Already present."
   fi
 }
 
@@ -57,13 +59,22 @@ function install_homebrew {
   if ! [ -x "$(command -v brew)" ]; then
     echo "Installing Homebrew"
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  else
+    echo "Already installed, updating."
   fi
   brew update
 }
 
 function generate_brewfile {
   step "Generate Brewfile"
-  cat "$DIR/Brewfile" "$HOME/.Brewfile.local" > "$HOME/.Brewfile"
+  local_brewfile="$HOME/.Brewfile.local"
+  shared_brewfile="$DIR/Brewfile"
+  if [ $(grep -cFwf "$shared_brewfile" "$local_brewfile") -gt 0 ]; then
+    echo "Local and shared Brewfiles have duplicate packages. Remove the following lines from one of the files:"
+    grep -Fwf "$shared_brewfile" "$local_brewfile"
+    exit 1
+  fi
+  cat "$shared_brewfile" "$local_brewfile" > "$HOME/.Brewfile"
   echo "Done."
 }
 
@@ -74,25 +85,22 @@ function install_homebrew_packages {
   brew upgrade
   brew cask upgrade
   mas upgrade
+}
+
+function cleanup_homebrew_packages {
+  step "Clean up old Homebrew packages"
   brew cleanup
+  echo "brew bundle cleanup --global"
+  brew bundle cleanup --global
 }
 
 function install_xcode {
   step "Run any remaining Xcode first launch tasks"
   if xcodebuild -checkFirstLaunchStatus; then
     sudo xcodebuild -runFirstLaunch
+  else
+    echo "No remaining tasks."
   fi
-}
-
-function update_package_managers {
-  step "Ensure package managers are up to date"
-  pip2 install --upgrade pip
-  bash -c "pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U; true"
-  pip3 install --upgrade pip
-  bash -c "pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U; true"
-  fish -c "nvm use latest; and npm update -g"
-  gem update --system
-  gem update
 }
 
 function prompt_for_fish {
@@ -116,7 +124,6 @@ function install_fisherman_plugins {
 function link_fish_settings {
   step "Ensure fish settings are present"
   fish "$DIR/fish/vars.fish"
-  fish "$DIR/fish/secret_vars.fish"
   link_all_if_absent "$DIR/fish/functions" "$HOME/.config/fish/functions"
   link_all_if_absent "$DIR/fish/completions" "$HOME/.config/fish/completions"
   link_all_if_absent "$DIR/fish/conf" "$HOME/.config/fish/conf.d"
