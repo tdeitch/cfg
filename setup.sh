@@ -26,6 +26,7 @@ function main {
   link_launch_agents
   link_bin_files
   git_init_templates
+  find_broken_symlinks
 }
 
 function copy_templates {
@@ -158,6 +159,14 @@ function link_bin_files {
 function git_init_templates {
   step "Ensure all projects use latest git templates"
   bash -c "find $CODE_HOME -name .git -execdir git init \; ; true"
+}
+
+function find_broken_symlinks {
+  step "Search for broken symlinks"
+  find "$HOME" -path "$HOME/Library" -prune -o -path "$HOME/.Trash" -prune -o -type l ! -exec test -e {} \; -print
+  if [[ $BIN_HOME/ != $HOME/* ]]; then
+    find "$BIN_HOME" -type l ! -exec test -e {} \; -print
+  fi
 }
 
 main
