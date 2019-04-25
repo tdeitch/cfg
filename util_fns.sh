@@ -98,3 +98,11 @@ function prompt {
 function step {
   echo -e "\n\n\033[34;1;4m$@\033[0m"
 }
+
+function pushd {
+    command pushd "$@" > /dev/null
+}
+
+function popd {
+    command popd "$@" > /dev/null
+}
