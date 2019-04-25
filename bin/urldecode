@@ -1,12 +1,12 @@
-#! /usr/bin/env python2
+#! /usr/bin/env python3
 
 # urldecode
 # Convert %xx entities to their single-character equivalents.
 # If replace_plus is true, also replaces `+` with space.
 replace_plus=True
 
-import sys, urllib
+import sys, urllib.parse
 if replace_plus:
-    print urllib.unquote_plus(' '.join(sys.argv[1:]))
+    print(urllib.parse.unquote_plus(' '.join(sys.argv[1:])))
 else:
-    print urllib.unquote(' '.join(sys.argv[1:]))
+    print(urllib.parse.unquote(' '.join(sys.argv[1:])))
