@@ -31,6 +31,8 @@ function get_new_brewfile {
   tmp_newfile=$(mktemp)
   brew bundle dump --force --file="$tmp_dumpfile"
   cat "$DIR/Brewfile" "$HOME/.Brewfile.local" > "$tmp_oldfile"
+  sed -e '/^[[:blank:]]*#/d;s/#.*//' -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' -i '' "$tmp_dumpfile"
+  sed -e '/^[[:blank:]]*#/d;s/#.*//' -e 's/^[[:blank:]]*//' -e 's/[[:blank:]]*$//' -i '' "$tmp_oldfile"
   sort -o "$tmp_dumpfile" "$tmp_dumpfile"
   sort -o "$tmp_oldfile" "$tmp_oldfile"
   comm -23 "$tmp_dumpfile" "$tmp_oldfile" > "$tmp_newfile"
