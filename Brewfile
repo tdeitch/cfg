@@ -1,16 +1,14 @@
 # Packages from cfg Brewfile
 tap "homebrew/bundle"
 tap "homebrew/cask"
-tap "homebrew/cask-versions"
 tap "homebrew/core"
-tap "sergiobenitez/osxct"
-brew "aspell"
+tap "sergiobenitez/osxct" # for CS 140e
+brew "aspell" # for emacs spell check
 brew "coreutils"
-brew "csvkit"
-brew "ctags"
+brew "ctags" # auto-generated with git hooks
 brew "dos2unix"
 brew "emacs"
-brew "enchant"
+brew "enchant" # get spelling suggestions with `enchant-2 -a`
 brew "exiftool"
 brew "ffmpeg"
 brew "fish"
@@ -18,24 +16,18 @@ brew "gcc"
 brew "git"
 brew "gnupg"
 brew "go"
-brew "hub"
 brew "imagemagick"
 brew "jq"
 brew "mas"
-brew "mitmproxy"
 brew "mplayer"
 brew "nvm"
 brew "p7zip"
 brew "pipenv"
 brew "pwgen"
 brew "python"
-brew "python@2"
 brew "qpdf"
-brew "rakudo-star"
-brew "ruby"
-brew "ruby-build"
-brew "sbcl"
-brew "sergiobenitez/osxct/aarch64-none-elf"
+brew "sbcl" # Learning with Land of Lisp
+brew "sergiobenitez/osxct/aarch64-none-elf" # for CS 140e
 brew "socat"
 brew "terminal-notifier"
 brew "the_silver_searcher"
@@ -46,13 +38,8 @@ brew "wget"
 cask "alfred"
 cask "bartender"
 cask "dash"
-cask "macvim"
 cask "spectacle"
 mas "1Password 7", id: 1333542190
-mas "Bear", id: 1091189122
-mas "Fantastical 2", id: 975937182
 mas "OmniFocus", id: 1346203938
 mas "Pixelmator", id: 407963104
-mas "Reeder", id: 880001334
-mas "WiFi Signal", id: 525912054
 mas "Xcode", id: 497799835
