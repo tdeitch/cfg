@@ -89,7 +89,7 @@ function update_package_managers {
   bash -c "pip2 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip2 install -U; true"
   pip3 install --upgrade pip
   bash -c "pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U; true"
-  npm update -g
+  fish -c "nvm use latest; and npm update -g"
   gem update --system
   gem update
 }
