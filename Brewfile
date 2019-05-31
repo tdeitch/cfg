@@ -5,6 +5,7 @@ tap "homebrew/core"
 tap "sergiobenitez/osxct" # for CS 140e
 brew "aspell" # for emacs spell check
 brew "coreutils"
+brew "csvkit"
 brew "ctags" # auto-generated with git hooks
 brew "dos2unix"
 brew "emacs"
