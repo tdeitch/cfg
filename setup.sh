@@ -128,6 +128,7 @@ function link_fish_settings {
   link_all_if_absent "$DIR/fish/functions" "$HOME/.config/fish/functions"
   link_all_if_absent "$DIR/fish/completions" "$HOME/.config/fish/completions"
   link_all_if_absent "$DIR/fish/conf" "$HOME/.config/fish/conf.d"
+  fish -c fish_update_completions
 }
 
 function link_dotfiles {
