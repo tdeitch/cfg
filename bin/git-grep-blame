@@ -1,0 +1,11 @@
+#!/bin/bash
+set -euo pipefail
+
+# git grep-blame
+# Run git blame over the results of git grep
+# Based on https://gist.github.com/lonnen/3101795
+
+IFS=:
+git grep -En $@ | while read file line code; do
+    git blame -f -L $line,$line $file | grep -E --color "$@|\$"
+done
