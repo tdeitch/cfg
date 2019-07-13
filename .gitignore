@@ -1,6 +1,7 @@
-dotfiles/.emacs.d/backups/*
+!.keep
 dotfiles/.emacs.d/auto-save-list/*
+dotfiles/.emacs.d/backups/*
+dotfiles/.emacs.d/elpa/*
+dotfiles/.tmux-workspaces/*
 dotfiles/.vim/.netrwhist
 dotfiles/.vim/undo/*
-dotfiles/.tmux-workspaces/*
-!.keep
