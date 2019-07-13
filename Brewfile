@@ -39,6 +39,7 @@ brew "wget"
 cask "alfred"
 cask "bartender"
 cask "dash"
+cask "firefox"
 cask "spectacle"
 mas "1Password 7", id: 1333542190
 mas "OmniFocus", id: 1346203938
