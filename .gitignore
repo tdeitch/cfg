@@ -1,4 +1,5 @@
 !.keep
+Brewfile.new
 dotfiles/.emacs.d/auto-save-list/*
 dotfiles/.emacs.d/backups/*
 dotfiles/.emacs.d/elpa/*

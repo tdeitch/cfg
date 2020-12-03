@@ -37,11 +37,15 @@ brew "trash"
 brew "watch"
 brew "wget"
 cask "alfred"
+cask "anki"
 cask "bartender"
 cask "dash"
 cask "firefox"
+cask "hex-fiend"
 cask "spectacle"
+cask "spotify"
 mas "1Password 7", id: 1333542190
 mas "OmniFocus", id: 1346203938
 mas "Pixelmator", id: 407963104
+mas "Weatherly", id: 1499228739
 mas "Xcode", id: 497799835
