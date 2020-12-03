@@ -84,7 +84,6 @@ function install_homebrew_packages {
   cd "$DIR"
   brew bundle --global
   brew upgrade
-  brew cask upgrade
   mas upgrade
 }
 
