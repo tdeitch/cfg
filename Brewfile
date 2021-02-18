@@ -44,7 +44,9 @@ cask "firefox"
 cask "hex-fiend"
 cask "spectacle"
 cask "spotify"
+cask "tidal"
 mas "1Password 7", id: 1333542190
+mas "Fantastical", id: 975937182
 mas "OmniFocus", id: 1346203938
 mas "Pixelmator", id: 407963104
 mas "Weatherly", id: 1499228739
