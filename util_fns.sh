@@ -8,6 +8,14 @@ function get_editor {
   set -u
 }
 
+function check_os {
+  desired_os=$1
+  if [ "$(uname)" != "$desired_os" ]; then
+    echo "expected uname to be $desired_os but got $(uname)"
+    exit 1
+  fi
+}
+
 function link_if_absent {
   if [ ! -e "$2" ]; then
     ln -s "$1" "$2"

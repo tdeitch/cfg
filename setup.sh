@@ -10,6 +10,7 @@ cd "$DIR"
 EDITOR="$(get_editor)"
 
 function main {
+  check_os "Darwin"
   sudo --validate
   copy_templates
   source "$HOME/.cfgrc" # loaded in copy_templates
