@@ -118,8 +118,8 @@ function install_fisherman_plugins {
   cd "$DIR/fish"
   mkdir -p "$HOME/.config/fish/functions"
   link_if_absent "$DIR/lib/fisherman/fisher.fish" "$HOME/.config/fish/functions/fisher.fish"
-  link_if_absent "$DIR/fish/fishfile" "$HOME/.config/fish/fishfile"
-  fish -c fisher
+  link_if_absent "$DIR/fish/fish_plugins" "$HOME/.config/fish/fish_plugins"
+  fish -c "fisher update"
 }
 
 function link_fish_settings {
