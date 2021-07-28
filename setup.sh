@@ -25,7 +25,6 @@ function main {
   link_dotfiles
   link_launch_agents
   link_bin_files
-  install_rust
   install_node
   git_init_templates
 }
@@ -155,15 +154,6 @@ function link_bin_files {
     mkdir "$BIN_HOME"
   fi
   link_all_if_absent "$DIR/bin" "$BIN_HOME"
-}
-
-function install_rust {
-  step "Rust is installed"
-  if [ -d "$HOME/.cargo" ]; then
-    echo "Already installed at $HOME/.cargo"
-  else
-    curl https://sh.rustup.rs -sSf | sh -s -- --no-modify-path
-  fi
 }
 
 function install_node {
